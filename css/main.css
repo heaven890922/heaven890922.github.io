@@ -216,7 +216,7 @@ h6 {
   padding: 0;
   font-weight: bold;
   line-height: 1.5;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Roboto Slab', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 h2,
 h3,
@@ -493,7 +493,7 @@ pre,
 }
 pre,
 code {
-  font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
+  font-family: 'PT Mono', consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
 }
 code {
   padding: 2px 4px;
@@ -1129,9 +1129,9 @@ pre .javascript .function {
   display: inline-block;
   vertical-align: top;
   line-height: 36px;
-  font-size: 20px;
+  font-size: 80px;
   font-weight: normal;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Lobster Two', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .site-subtitle {
   margin-top: 10px;
@@ -1822,7 +1822,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #67c9ff;
+  background: #67ff69;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2659,4 +2659,80 @@ embed {
 }
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
+}
+.post {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 25px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+  border-radius: 10px;
+}
+.heart {
+  width: 10px;
+  height: 10px;
+  position: fixed;
+  background: #f00;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+}
+.heart:after,
+.heart:before {
+  content: '';
+  width: inherit;
+  height: inherit;
+  background: inherit;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  position: fixed;
+}
+.heart:after {
+  top: -5px;
+}
+.heart:before {
+  left: -5px;
+}
+.sidebar {
+  box-shadow: inset 2px 2px 40px #bdb2b2;
+}
+#sidebar {
+  background: url("/images/sidebar.jpg");
+  background-size: contain;
+}
+#header {
+  background: url("/images/header.jpg");
+  height: 340px;
+}
+.site-title {
+  margin-bottom: 10px;
+}
+.site-subtitle {
+  margin-top: 60px;
+}
+.brand {
+  background: none;
+}
+.menu .menu-item {
+  margin-right: 60px;
+}
+nav.site-nav {
+  background: rgba(240,248,255,0.741);
+}
+.btn {
+  border-radius: 30px;
+  border: 2px solid #fff0f0;
+  border-radius: 30px;
+  background: #5aa;
+}
+.site-author-name {
+  font-size: 30px;
+  font-family: 'Roboto Slab', "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #deb887;
+  font-family: 'Lobster Two';
 }

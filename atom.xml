@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>OLiver&#39;s Blog</title>
+  
+  <subtitle>live young</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.chencl.cc/"/>
+  <updated>2018-09-29T16:46:34.743Z</updated>
+  <id>http://www.chencl.cc/</id>
+  
+  <author>
+    <name>OLiver</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mysql创建用户和开启远程访问</title>
+    <link href="http://www.chencl.cc/2018/09/29/mysql%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E5%92%8C%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/"/>
+    <id>http://www.chencl.cc/2018/09/29/mysql创建用户和开启远程访问/</id>
+    <published>2018-09-29T14:52:59.000Z</published>
+    <updated>2018-09-29T16:46:34.743Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="创建用户并分配权限"><a href="#创建用户并分配权限" class="headerlink" title="创建用户并分配权限"></a>创建用户并分配权限</h2><h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure><p>输入密码即可登录</p><h3 id="选择数据库"><a href="#选择数据库" class="headerlink" title="选择数据库"></a>选择数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br></pre></td></tr></table></figure><a id="more"></a><p>use mysql;</p><h3 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> host,<span class="keyword">user</span>,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">user</span>;</span><br></pre></td></tr></table></figure><h3 id="创建新的用户"><a href="#创建新的用户" class="headerlink" title="创建新的用户"></a>创建新的用户</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">'test'</span>@<span class="string">'localhost'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure><p>其中 ‘test’ 是用户名，localhost是代表可访问的用户id，设置localhost则是代表只能本机访问，%则是所有可以访问，开发的时候可以设置所有ip可以访问，生产环境设置 web服务器ip，如果同服务器则设置localhost</p><h3 id="分配用户权限"><a href="#分配用户权限" class="headerlink" title="分配用户权限"></a>分配用户权限</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> all <span class="keyword">privileges</span> <span class="keyword">on</span> <span class="string">`testdb`</span>.* <span class="keyword">to</span> <span class="string">'test'</span>@<span class="string">'%'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure><p>privileges on 后面接的是权限所对应的库或者表。  ‘testdb’.*表示对‘testdb’库所有表都有操作权限， ‘test‘@’localhost’ identified by ‘123456’是需要授权的用户</p><font color="Hotpink">ps:all privileges 是开启所有权限，建议在开发环境使用，建议生产环境禁用远程登录或者只开启查看权限</font><h3 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure><p>一般情况下到这一步是可以开启正常访问权限了，如果还是不可以远程访问则检查mysql配置和防火墙</p><h2 id="mysql配置修改"><a href="#mysql配置修改" class="headerlink" title="mysql配置修改"></a>mysql配置修改</h2><h3 id="检查mysql配置是否限制了只能本机登录"><a href="#检查mysql配置是否限制了只能本机登录" class="headerlink" title="检查mysql配置是否限制了只能本机登录"></a>检查mysql配置是否限制了只能本机登录</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/my.cnf</span><br></pre></td></tr></table></figure><p>一般是这个路径，没有 可以参考这个 <a href="https://www.jb51.net/article/110395.htm" target="_blank" rel="noopener">https://www.jb51.net/article/110395.htm</a></p><h3 id="使用-屏蔽下面的代码"><a href="#使用-屏蔽下面的代码" class="headerlink" title="使用#屏蔽下面的代码"></a>使用#屏蔽下面的代码</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bind-address = 127.0.0.1</span></span><br></pre></td></tr></table></figure><h3 id="如果版本比较老还需要屏蔽下面这个"><a href="#如果版本比较老还需要屏蔽下面这个" class="headerlink" title="如果版本比较老还需要屏蔽下面这个"></a>如果版本比较老还需要屏蔽下面这个</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#skip-networking</span></span><br></pre></td></tr></table></figure><p>然后重启mysql</p><p>如果还是有问题</p><p>则应该是防火墙的问题</p><h2 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/iptables</span><br></pre></td></tr></table></figure><p>查看是否开放了3306的接口</p><p>如果没有则加入</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT</span><br></pre></td></tr></table></figure><p>或者复制文件里面一行 修改端口为3306就可以了</p><p>或者是firewalld防火墙，需要开放3306端口</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;创建用户并分配权限&quot;&gt;&lt;a href=&quot;#创建用户并分配权限&quot; class=&quot;headerlink&quot; title=&quot;创建用户并分配权限&quot;&gt;&lt;/a&gt;创建用户并分配权限&lt;/h2&gt;&lt;h3 id=&quot;登录&quot;&gt;&lt;a href=&quot;#登录&quot; class=&quot;headerlink&quot; title=&quot;登录&quot;&gt;&lt;/a&gt;登录&lt;/h3&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mysql -u root -p&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;输入密码即可登录&lt;/p&gt;
+&lt;h3 id=&quot;选择数据库&quot;&gt;&lt;a href=&quot;#选择数据库&quot; class=&quot;headerlink&quot; title=&quot;选择数据库&quot;&gt;&lt;/a&gt;选择数据库&lt;/h3&gt;&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;use&lt;/span&gt; mysql;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://www.chencl.cc/categories/mysql/"/>
+    
+    
+  </entry>
+  
+</feed>
